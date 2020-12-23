@@ -124,6 +124,5 @@ ipcMain.on("delete", (event) => {
 
 //Delete records from database
 ipcMain.on("delete-clicked", (err, data) => {
-    console.log(data);
     db.run("DELETE FROM journal WHERE dailytext = (?)", data);
 });
