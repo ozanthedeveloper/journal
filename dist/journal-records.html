@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="records.css">
+    <title>Journal Records</title>
+</head>
+<body>
+    <label for="search-by-date">Search By Date: </label>
+    <input placeholder="2020/12/01" id="search-by-date">
+    <script>
+        const {ipcRenderer} = require("electron");
+        let dataArr = [],
+            dataCount,
+            willDelete,
+            dates;
+        ipcRenderer.on("journal-datas", (event, data) => {
+            dataArr = data;
+            dataCount = dataArr[0].length;
+            willDelete = dataArr[2];
+        });
+        arrayDeclared = setInterval(() => {
+            if (dataCount != undefined) {
+                let bodyTag = document.getElementsByTagName("body")[0];
+                for (let i = 0; i < dataCount; i++) {
+                    //Add <p> tag to body (Text)
+                    textTag = document.createElement("p");
+                    text = document.createTextNode(dataArr[0][i]);
+                    textTag.appendChild(text);
+                    bodyTag = document.getElementsByTagName("body")[0];
+                    bodyTag.appendChild(textTag);
+                    //Add <span> tag to <p> (Date)
+                    dateTag = document.createElement("span");
+                    date = document.createTextNode(" "+dataArr[1][i]);
+                    dateTag.appendChild(date);
+                    pTag = document.getElementsByTagName("p")[i];
+                    pTag.appendChild(dateTag);
+                    //Delete Buttons (if clicked on delete button)
+                    if (willDelete === "delete") {
+                        deleteTag = document.createElement("button");
+                        deleteTextButton = document.createTextNode("Delete");
+                        deleteTag.appendChild(deleteTextButton);
+                        pTag.appendChild(deleteTag);
+                        for (let _ = 0; _ < document.getElementsByTagName("button").length; _++) {
+                            document.getElementsByTagName("button")[_].setAttribute("onclick", "deleteRecord(event)");
+                        }
+                    }
+                }
+                dates = dataArr[1];
+                clearInterval(arrayDeclared);
+            }
+        },10);
+
+        //Search
+        let entryDate;
+        document.getElementById("search-by-date").addEventListener("keyup", function(event) {
+            entryDate = event.target.value;
+            let pTags = document.getElementsByTagName('p');
+            for (let x = 0; x < pTags.length; x++) {
+                let p = pTags[x];
+                let content = p.innerHTML.trim();
+                if (!content.includes(entryDate)) {
+                    p.style.display = 'none';
+                } else {
+                    p.style.display = 'block';
+                }
+            }
+        });
+
+        //Send the text according to clicked button's data for deleting it from database
+        function deleteRecord(e) {
+            let deleteText = e.target.parentElement.childNodes[0].nodeValue;
+            ipcRenderer.send("delete-clicked", deleteText);
+            e.target.parentElement.style.display = "none";
+        }
+    </script>
+</body>
+</html>

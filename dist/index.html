@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Journal</title>
+</head>
+<body>
+    <div class="journal-entry">
+        <textarea placeholder="Tell the Journal how was your day!" spellcheck="false"></textarea>
+    </div>
+    <div class="buttons">
+        <button onclick="addJournal()">Add a Journal Post</button>
+        <button onclick="deleteJournal()">Delete a Journal Post</button>
+        <button onclick="showJournal()">See Journal Posts</button>
+    </div>
+    <script>
+        //Declare textarea tag as variable
+        const textareaTag = document.getElementsByTagName("textarea")[0];
+        //Focus on textarea
+        textareaTag.focus();
+        const {ipcRenderer} = require("electron");
+        const {BrowserWindow} = require("electron").remote;
+        const url = require("url");
+        const path = require("path");
+        let journalData;
+        //A function for adding datas to database. It communicates with main.js. Database operations are in progress in backend.
+        function addJournal() {
+            //Get the value from textarea
+            journalData = textareaTag.value;
+            //Send the datas
+            if (journalData != "") ipcRenderer.send("add", [journalData, createDateString()]);
+        }
+
+        //Function for deleting datas from database
+        function deleteJournal() {
+            ipcRenderer.send("delete", "");
+        }
+
+        //Function for showing database datas.
+        function showJournal() {
+            ipcRenderer.send("show", "");
+        }
+
+        //Get todays date as yyyy/mm/dd format
+        function createDateString() {
+            let d = new Date(),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+            if (month.length < 2) 
+                month = '0' + month;
+            if (day.length < 2) 
+                day = '0' + day;
+            return [year, month, day].join('/');
+        }
+    </script>
+</body>
+</html>

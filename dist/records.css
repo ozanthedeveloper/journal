@@ -1,0 +1,46 @@
+@font-face {
+    font-family: "Roboto";
+    src: url("fonts/Roboto-Regular.ttf");
+    font-weight: normal;
+}
+
+html, body {
+    margin:10px;
+    padding:0;
+}
+
+::selection {
+    background-color: #ececec85;
+}
+
+* {
+    font-family:"Roboto";
+}
+
+p {
+    font-size:23px;
+    color:white;
+}
+
+span {
+    color:rgb(0, 255, 242);
+    margin-right:20px;
+}
+
+input {
+    display:inline-block;
+    border-radius: 0;
+    border:none;
+    font-size:20px;
+    outline-color:royalblue;
+}
+
+label {
+    color:white;
+    margin-right:10px;
+    font-size:20px;
+}
+
+button {
+    font-size:23px;
+}

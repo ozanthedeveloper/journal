@@ -1,0 +1,17 @@
+{
+  "name": "journalv2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . Journal"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^11.1.0",
+    "sqlite3": "^5.0.0"
+  },
+  "devDependencies": {}
+}
