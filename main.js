@@ -17,9 +17,6 @@ function startApp() {
         minHeight:625,
         maxWidth:875,
         maxHeight:625,
-        /* The reason of why I didn't use resizable:false instead of 
-        adding maxWidth and maxHeight attributes is, there is a issue.
-        When I move the window, window height changes without a reason. */
         backgroundColor: '#0e1123',
         icon: __dirname + '/icon.ico',
         webPreferences: {
